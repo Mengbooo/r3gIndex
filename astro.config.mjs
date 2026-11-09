@@ -6,5 +6,5 @@ export default defineConfig({
   output: 'static',
   devToolbar: { enabled: false },
   integrations: [sitemap({ filter: (page) => !page.endsWith('/404/') })],
-  vite: { build: { rollupOptions: { output: { manualChunks(id) { if (id.includes('/node_modules/three/')) return 'three'; if (id.includes('/node_modules/opentype.js/')) return 'opentype'; } } } } },
+  vite: { build: { rollupOptions: { output: { manualChunks(id) { if (id.includes('/node_modules/three/')) return 'three'; } } } } },
 });

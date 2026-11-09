@@ -1,0 +1,8 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import { mediaAsset } from '../lib/media';
+interface Props extends Omit<HTMLAttributes<'img'>, 'src' | 'srcset'> { asset: string }
+const { asset, ...attributes } = Astro.props;
+const { src, fallback } = mediaAsset(asset);
+---
+<img {...attributes} src={src} data-media={asset} data-fallback={fallback} crossorigin="anonymous" onerror="this.onerror=null;this.src=this.dataset.fallback"/>

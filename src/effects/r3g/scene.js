@@ -1,5 +1,7 @@
 import * as THREE from 'three';
-import {parse} from 'opentype.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
+import { fetchMediaBuffer } from '../../lib/media';
 import {CUT_TIME_SCALE,DURATION,ROTATION_PERIOD} from './timing.js';
 
 export async function createR3gScene(output,{layered=false}={}){
@@ -14,16 +16,24 @@ const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
 const smooth=x=>{x=clamp(x);return x*x*(3-2*x)};
 const fract=x=>x-Math.floor(x);
 const hash=n=>fract(Math.sin(n*127.1+311.7)*43758.5453);
-const response=await fetch('/assets/fonts/redaction-35/Redaction35-Bold.ttf');
-if(!response.ok)throw new Error(`r3g font: ${response.status}`);
-const font=parse(await response.arrayBuffer());
-const p=font.getPath('r3g',0,0,220,{kerning:true});
-const path=new THREE.ShapePath();
-for(const v of p.commands){if(v.type==='M')path.moveTo(v.x,-v.y);else if(v.type==='L')path.lineTo(v.x,-v.y);else if(v.type==='Q')path.quadraticCurveTo(v.x1,-v.y1,v.x,-v.y);else if(v.type==='C')path.bezierCurveTo(v.x1,-v.y1,v.x2,-v.y2,v.x,-v.y);else if(v.type==='Z')path.currentPath.closePath();}
-const shapes=path.toShapes();
-const raw=new THREE.ExtrudeGeometry(shapes,{depth:24,steps:1,bevelEnabled:true,bevelSegments:4,bevelSize:3.0,bevelThickness:3.0,curveSegments:20});
-raw.computeBoundingBox();const originalBox=raw.boundingBox.clone(),size=originalBox.getSize(new THREE.Vector3());
-const k=4.35/size.x,center=originalBox.getCenter(new THREE.Vector3());raw.translate(-center.x,-center.y,-center.z);raw.scale(k,k,k);raw.computeVertexNormals();
+// Geometry, contour samples and particle seeds are baked once by assets:prepare.
+const gltf=await new GLTFLoader().setMeshoptDecoder(MeshoptDecoder).parseAsync(await fetchMediaBuffer('r3g-scene'),'');
+const baked=gltf.scene.getObjectByName('r3g');
+const raw=baked.getObjectByName('r3g-model').geometry;
+raw.computeBoundingBox();
+const pointGeo=baked.getObjectByName('r3g-points').geometry;
+pointGeo.setAttribute('aSeed',pointGeo.getAttribute('_aseed'));
+pointGeo.deleteAttribute('_aseed');
+const pointCount=pointGeo.getAttribute('position').count;
+const bakedOutlines=baked.getObjectByName('r3g-contours');
+const contours=bakedOutlines.children.filter(line=>line.name.endsWith('-front')).map(line=>{
+ const position=line.geometry.getAttribute('position');
+ return Array.from({length:position.count},(_,i)=>new THREE.Vector2(position.getX(i),position.getY(i)));
+});
+const anchors=baked.userData.anchors.map(position=>new THREE.Vector3(...position));
+const placeholders=new Set();
+gltf.scene.traverse(object=>{if(object.material)for(const material of [].concat(object.material))placeholders.add(material);});
+placeholders.forEach(material=>material.dispose());
 const scene=new THREE.Scene();
 const camera=new THREE.PerspectiveCamera(36,1,.1,100);camera.position.set(0,0,10.2);
 const renderer=new THREE.WebGLRenderer({alpha:true,antialias:true,preserveDrawingBuffer:!layered,powerPreference:'high-performance'});renderer.setSize(W,H);renderer.setPixelRatio(1);renderer.setClearColor(0x000000,0);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.0;
@@ -36,17 +46,8 @@ const key=new THREE.DirectionalLight(0xffffff,4.3);key.position.set(-3,5,5);scen
 const rim=new THREE.DirectionalLight(0x6888ff,3.4);rim.position.set(4,1,-4);scene.add(rim);
 const fill=new THREE.DirectionalLight(0xffffff,1.0);fill.position.set(2,-4,4);scene.add(fill);
 const outline=new THREE.Group();group.add(outline);
-const contours=[];
-for(const s of shapes){contours.push(s.getPoints(90));for(const h of s.holes)contours.push(h.getPoints(55));}
 const outlineMat=new THREE.LineBasicMaterial({color:0x1e3fd8,transparent:true,opacity:.9});
-for(const pts of contours){for(const depth of [0,24]){const linepts=pts.map(v=>new THREE.Vector3((v.x-center.x)*k,(v.y-center.y)*k,(depth-center.z)*k));const geo=new THREE.BufferGeometry().setFromPoints(linepts);outline.add(new THREE.LineLoop(geo,outlineMat));}}
-const anchors=[];
-for(const contour of contours){for(let j=0;j<contour.length;j+=Math.max(2,Math.floor(contour.length/12))){const v=contour[j];anchors.push(new THREE.Vector3((v.x-center.x)*k,(v.y-center.y)*k,(24-center.z)*k));}}
-const flat=new THREE.ShapeGeometry(shapes,24);flat.translate(-center.x,-center.y,0);flat.scale(k,k,k);
-// Dense, evenly sampled surfaces; the counters of r/3/g remain genuinely open.
-const positions=[],seeds=[];
-for(let y=-1.65;y<1.65;y+=.026){for(let x=-2.2;x<2.2;x+=.026){const px=x/k+center.x,py=y/k+center.y;let inside=false;for(const s of shapes){if(THREE.ShapeUtils.isClockWise(s.getPoints(60))===false){}const point=new THREE.Vector2(px,py);const inPoly=(pts)=>{let ok=false;for(let i=0,j=pts.length-1;i<pts.length;j=i++){const a=pts[i],b=pts[j];if(((a.y>py)!==(b.y>py))&&(px<(b.x-a.x)*(py-a.y)/(b.y-a.y)+a.x))ok=!ok;}return ok;};if(inPoly(s.getPoints(75))&&!s.holes.some(h=>inPoly(h.getPoints(45)))){inside=true;break;}}if(inside){for(const z of [-.16,.16]){positions.push(x,y,z);seeds.push(hash(positions.length));}}}}
-const pointGeo=new THREE.BufferGeometry();pointGeo.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));pointGeo.setAttribute('aSeed',new THREE.Float32BufferAttribute(seeds,1));
+for(const line of bakedOutlines.children)outline.add(new THREE.LineLoop(line.geometry,outlineMat));
 const pointMat=new THREE.ShaderMaterial({transparent:true,depthWrite:false,blending:THREE.NormalBlending,uniforms:{uTime:{value:0},uMode:{value:0},uPixelScale:{value:1}},vertexShader:`attribute float aSeed; varying float vLight; uniform float uTime;uniform float uMode;uniform float uPixelScale; void main(){vec3 p=position;vec4 view=modelViewMatrix*vec4(p,1.);gl_Position=projectionMatrix*view;gl_PointSize=(1.4+aSeed*1.4)*(10./-view.z)*uPixelScale;vLight=.2+.8*pow(max(0.,sin(p.y*2.2+uTime*3.5)),4.);vLight+=.3*step(.92,fract(aSeed*17.+floor(uTime*12.)*.17));}`,fragmentShader:`varying float vLight;uniform float uMode;void main(){float d=length(gl_PointCoord-.5);if(d>.5)discard;vec3 col=mix(vec3(.035,.075,.22),vec3(.118,.247,.847),clamp(vLight,0.,1.));gl_FragColor=vec4(col,(1.-smoothstep(.2,.5,d))*(.65+vLight*.3));}`});
 const points=new THREE.Points(pointGeo,pointMat);group.add(points);
 const grid=new THREE.GridHelper(22,38,0x575d68,0xabb0b8);grid.position.y=-1.9;grid.material.transparent=true;grid.material.opacity=.28;scene.add(grid);
@@ -65,7 +66,7 @@ function blueGrid(){for(let x=40;x<=1040;x+=15){line(x,40,x,1040,'#707987',x%75=
 function blueprint(t){blueGrid();c.strokeStyle='#4858b3';c.lineWidth=1.1;c.strokeRect(20,20,1040,1040);c.strokeRect(38,38,1004,1004);for(let i=0;i<6;i++){label(''+(i+1),125+i*168,31,'#454b56',9);label(''+(i+1),125+i*168,1055,'#454b56',9);line(125+i*168,38,125+i*168,45,'#8b98b2');}for(let i=0;i<4;i++)label(String.fromCharCode(65+i),25,200+i*230,'#454b56',9);
 label('ISO · LIVE',1009,85,'#202531',10,'right');label(`YAW ${(((BASE_YAW+t*ANGULAR_SPEED)*180/Math.PI%360+360)%360).toFixed(1)}°  PITCH −7.4°`,1009,102,'#4e5562',9,'right');
 // Small front orthographic view.
-c.save();c.translate(174,177);c.scale(23,-23);c.lineWidth=.035;c.strokeStyle='#5b69bd';for(const pts of contours){c.beginPath();pts.forEach((v,j)=>{const x=(v.x-center.x)*k,y=(v.y-center.y)*k;j?c.lineTo(x,y):c.moveTo(x,y);});c.closePath();c.stroke();}c.restore();corners(105,120,138,116,'#7186db',5);label('FRONT / 01',174,255,'#343a46',8,'center');line(105,110,243,110,'#6577c1',.7);label('43.50',174,105,'#292f3c',8,'center');
+c.save();c.translate(174,177);c.scale(23,-23);c.lineWidth=.035;c.strokeStyle='#5b69bd';for(const pts of contours){c.beginPath();pts.forEach((v,j)=>{const x=v.x,y=v.y;j?c.lineTo(x,y):c.moveTo(x,y);});c.closePath();c.stroke();}c.restore();corners(105,120,138,116,'#7186db',5);label('FRONT / 01',174,255,'#343a46',8,'center');line(105,110,243,110,'#6577c1',.7);label('43.50',174,105,'#292f3c',8,'center');
 const b=getBounds();const y=b.y+b.h+52;line(b.x,y,b.x+b.w,y,'#6075be',.55);line(b.x,y-7,b.x,y+7,'#6075be');line(b.x+b.w,y-7,b.x+b.w,y+7,'#6075be');label('X 43.50',b.x+b.w*.5,y-7,'#303744',9,'center');label('Y 21.00',b.x-24,b.y+b.h*.5,'#303744',9,'right');label('Z 2.80',b.x+b.w+18,y-25,'#303744',9);
 for(let i=0;i<3;i++){c.strokeStyle='#4654a1';c.strokeRect(135+i*58,918,32,42);for(let j=0;j<6;j++)line(135+i*58+j*5,958,160+i*58,918+j*6,'#455abb',.3);}
 label('SECTION A–A',180,985,'#454b56',8);label('Ø 17.00   COUNTER 6.90',75,885,'#454b56',8);
@@ -103,7 +104,7 @@ if(!isBlueprint){gc.clearRect(0,0,W,H);gc.filter=`blur(${isTrack?5:2}px)`;gc.dra
 if(!layered)c.drawImage(renderer.domElement,viewport.left,viewport.top,viewport.designWidth,viewport.designHeight);
 if(isBlueprint)blueprint(t);if(isTrack)tracking(t);if(isScan)spectral(t);if(isNetwork)network(t);
 texture(t,mode);
-lastState={elapsed,t,mode,points:positions.length/3,rotation:{x:group.rotation.x,y:group.rotation.y,z:group.rotation.z},scale:group.scale.x,position:{x:group.position.x,y:group.position.y,z:group.position.z},cameraZ:camera.position.z};
+lastState={elapsed,t,mode,points:pointCount,rotation:{x:group.rotation.x,y:group.rotation.y,z:group.rotation.z},scale:group.scale.x,position:{x:group.position.x,y:group.position.y,z:group.position.z},cameraZ:camera.position.z};
 return lastState;
 }
 
@@ -123,11 +124,11 @@ function resize(width,height,pixelRatio=1){
 }
 function getDiagnostics(){
  const size=renderer.getDrawingBufferSize(new THREE.Vector2());
- return{renderer:'Three.js',layered,viewport:{...viewport},buffer:{width:size.x,height:size.y},vertices:raw.attributes.position.count,points:positions.length/3,modelSize:raw.boundingBox.getSize(new THREE.Vector3()).toArray(),disposed};
+ return{renderer:'Three.js',layered,viewport:{...viewport},buffer:{width:size.x,height:size.y},vertices:raw.attributes.position.count,points:pointCount,modelSize:raw.boundingBox.getSize(new THREE.Vector3()).toArray(),disposed};
 }
 function dispose(){
  if(disposed)return;disposed=true;
- const geometries=new Set([raw,flat,pointGeo]),materials=new Set([material,pointMat,outlineMat]);
+ const geometries=new Set([raw,pointGeo]),materials=new Set([material,pointMat,outlineMat]);
  scene.traverse(object=>{if(object.geometry)geometries.add(object.geometry);if(object.material){for(const m of [].concat(object.material))materials.add(m);}});
  geometries.forEach(geometry=>geometry.dispose());materials.forEach(material=>material.dispose());
  renderer.dispose();if(layered)renderer.domElement.remove();

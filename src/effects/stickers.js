@@ -1,3 +1,4 @@
+import { loadMediaImage } from '../lib/media';
 import { stickers as stickerCollection } from '../data/site';
 export async function initializeStickers(board){
  const abort=new AbortController();
@@ -83,9 +84,7 @@ function art(w,h,draw){const c=document.createElement('canvas');c.width=w;c.heig
 
 const collection=stickerCollection.map(({file,name})=>[file,name]);
 async function loadSticker(file){
- const image=new Image();
- image.src=`/assets/stickers/${file}.webp`;
- await image.decode();
+ const image=await loadMediaImage(file);
  // Trim the generated transparent margins while keeping room for the soft shadow.
  const source=art(image.width,image.height,x=>x.drawImage(image,0,0));
  const data=source.getContext('2d').getImageData(0,0,source.width,source.height).data;

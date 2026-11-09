@@ -1,7 +1,10 @@
+---
+import MediaImage from './MediaImage.astro';
+---
       <section class="reel-track" id="labs" aria-label="r3g live 3D experiments">
         <div class="reel-stage">
           <div class="reel-screen">
-            <img class="reel-fallback" src="/assets/r3g-poster.webp" width="1080" height="1080" loading="lazy" decoding="async" alt="r3g 3D wordmark"/>
+            <MediaImage class="reel-fallback" asset="r3g-poster" width="1080" height="1080" loading="lazy" decoding="async" alt="r3g 3D wordmark"/>
             <canvas class="reel-canvas" width="1080" height="1080" role="img" aria-label="Rotating r3g in solid, tracking, network, wireframe, and point-cloud materials"></canvas>
           </div>
         </div>

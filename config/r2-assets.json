@@ -1,0 +1,138 @@
+{
+  "version": 1,
+  "cacheControl": "public, max-age=31536000, immutable",
+  "files": [
+    {
+      "logicalName": "01-r3g-wordmark",
+      "file": "01-r3g-wordmark.c2b3a1c45fe3.webp",
+      "bytes": 101616,
+      "sha256": "c2b3a1c45fe3237111174b7d5d05d27c3c146d4a316630d4e13b78f0a29ba221",
+      "kind": "sticker",
+      "source": "public/assets/stickers/01-r3g-wordmark.webp",
+      "originalBytes": 264018,
+      "width": 768,
+      "height": 768,
+      "contentType": "image/webp"
+    },
+    {
+      "logicalName": "06-smiling-flower",
+      "file": "06-smiling-flower.cc42d916d053.webp",
+      "bytes": 81974,
+      "sha256": "cc42d916d05348e9e9e65d86e08f4da4ab8a09f6cfce0ad7dc3bef811af0adec",
+      "kind": "sticker",
+      "source": "public/assets/stickers/06-smiling-flower.webp",
+      "originalBytes": 212504,
+      "width": 768,
+      "height": 768,
+      "contentType": "image/webp"
+    },
+    {
+      "logicalName": "02-ascii-shark",
+      "file": "02-ascii-shark.4ebac5ee9a90.webp",
+      "bytes": 138034,
+      "sha256": "4ebac5ee9a90bf4ddb62a7258fb0f6127f5513ef493b8c7fe7385ddf3aeec093",
+      "kind": "sticker",
+      "source": "public/assets/stickers/02-ascii-shark.webp",
+      "originalBytes": 391870,
+      "width": 768,
+      "height": 768,
+      "contentType": "image/webp"
+    },
+    {
+      "logicalName": "03-terminal",
+      "file": "03-terminal.299579f645e2.webp",
+      "bytes": 152926,
+      "sha256": "299579f645e21e96517613a18f94df76d8a2f56533c16dc60cfb240ecb147e3a",
+      "kind": "sticker",
+      "source": "public/assets/stickers/03-terminal.webp",
+      "originalBytes": 401610,
+      "width": 768,
+      "height": 768,
+      "contentType": "image/webp"
+    },
+    {
+      "logicalName": "07-ai-chip",
+      "file": "07-ai-chip.62b161a8b67e.webp",
+      "bytes": 130036,
+      "sha256": "62b161a8b67eb4684d2e8ffadaf0a026e35d56a5e6d41c5877f72c869c9a4144",
+      "kind": "sticker",
+      "source": "public/assets/stickers/07-ai-chip.webp",
+      "originalBytes": 336690,
+      "width": 768,
+      "height": 768,
+      "contentType": "image/webp"
+    },
+    {
+      "logicalName": "r3g-curiosity-seal",
+      "file": "r3g-curiosity-seal.579119ab2fe8.webp",
+      "bytes": 49356,
+      "sha256": "579119ab2fe8706968ead62ca2c4bcf41af9a925a315880041c37d08c009d15c",
+      "kind": "footer",
+      "source": "public/assets/footer/r3g-curiosity-seal.svg",
+      "originalBytes": 146681,
+      "width": 600,
+      "height": 600,
+      "contentType": "image/webp"
+    },
+    {
+      "logicalName": "r3g-design-code-seal",
+      "file": "r3g-design-code-seal.36b6e9e97979.webp",
+      "bytes": 26190,
+      "sha256": "36b6e9e9797918e90f927ecb0e4e9ffde6b93f16fc3bd96af80420bfecc02c6d",
+      "kind": "footer",
+      "source": "public/assets/footer/r3g-design-code-seal.svg",
+      "originalBytes": 114354,
+      "width": 600,
+      "height": 600,
+      "contentType": "image/webp"
+    },
+    {
+      "logicalName": "r3g-human-ai-seal",
+      "file": "r3g-human-ai-seal.5336bd7a9e67.webp",
+      "bytes": 33208,
+      "sha256": "5336bd7a9e6713e34d78bf6f7f64d3d59990135f5485f17bbff81d84de84d5ca",
+      "kind": "footer",
+      "source": "public/assets/footer/r3g-human-ai-seal.svg",
+      "originalBytes": 129884,
+      "width": 600,
+      "height": 600,
+      "contentType": "image/webp"
+    },
+    {
+      "logicalName": "r3g-poster",
+      "file": "r3g-poster.996150d54c24.webp",
+      "bytes": 28684,
+      "sha256": "996150d54c245e1af27ae454ff580efc3cbb54a1bd10d4acbf6a82b64ec00a9e",
+      "kind": "poster",
+      "source": "public/assets/r3g-poster.webp",
+      "originalBytes": 28684,
+      "contentType": "image/webp"
+    },
+    {
+      "logicalName": "r3g-scene",
+      "file": "r3g-scene.0d6e1234bc46.glb",
+      "bytes": 189944,
+      "sha256": "0d6e1234bc461425f8002cc1cac10fb59275ae29ef59ab2e8d5ae8d975ce4458",
+      "kind": "model",
+      "contentType": "model/gltf-binary",
+      "compression": "EXT_meshopt_compression (lossless; MeshoptDecoder required)",
+      "uncompressedBytes": 422516,
+      "modelSize": [
+        4.349999904632568,
+        2.698564291000366,
+        0.37848028540611267
+      ],
+      "originalVertices": 13224,
+      "vertices": 8828,
+      "points": 10282,
+      "contourCount": 7,
+      "validation": "triangle positions and normals match within 1e-7; point positions and seeds match exactly"
+    }
+  ],
+  "totals": {
+    "files": 10,
+    "bytes": 931968,
+    "originalImageBytes": 2026295,
+    "optimizedImageBytes": 742024
+  }
+}
