@@ -17,7 +17,7 @@ export const navigation = [
 
 export const contacts = [
   { label: 'email', value: 'r3actgo@163.com', href: 'mailto:r3actgo@163.com' },
-  { label: 'github', value: 'https://github.com/Mengbooo', href: 'https://github.com/Mengbooo' },
+  { label: 'github', value: '@Mengbooo', href: 'https://github.com/Mengbooo' },
   { label: 'X', value: '@R3actGo', href: 'https://x.com/R3actGo' },
   { label: 'rednote', value: 'r3actgo', href: 'https://www.xiaohongshu.com/user/profile/6025423800000000010094a0' },
 ] as const;
