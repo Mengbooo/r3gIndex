@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navigation from '../components/Navigation.astro';
+import Hero from '../components/Hero.astro';
+import HeroSpacer from '../components/HeroSpacer.astro';
+import Intro from '../components/Intro.astro';
+import LabsScene from '../components/LabsScene.astro';
+import LabsIntroduction from '../components/LabsIntroduction.astro';
+import Stickers from '../components/Stickers.astro';
+import ContactMethods from '../components/ContactMethods.astro';
+import Footer from '../components/Footer.astro';
+---
+<BaseLayout>
+  <a class="skip-link" href="#intro">Skip to content</a>
+  <div class="window-edge" aria-hidden="true"></div>
+  <Navigation/>
+  <Hero/>
+  <main>
+    <HeroSpacer/>
+    <section class="intro-panel rounded-panel" id="intro" aria-labelledby="intro-title">
+      <Intro/>
+      <LabsScene/>
+      <LabsIntroduction/>
+    </section>
+    <section class="information-panel rounded-panel">
+      <Stickers/>
+      <ContactMethods/>
+    </section>
+    <Footer/>
+  </main>
+  <script>
+    import { initializeSite } from '../scripts/main';
+    initializeSite();
+  </script>
+</BaseLayout>

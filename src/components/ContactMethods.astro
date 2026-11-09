@@ -1,0 +1,16 @@
+---
+import Arrow from './Arrow.astro';
+import { contacts } from '../data/site';
+---
+<section class="split-section press-section" id="other" aria-labelledby="press-title">
+  <div class="section-copy"><h2 id="press-title">If you’d like to find me, here are some ways you can reach me:</h2></div>
+  <div class="section-content">
+    <div class="record-list" id="note-list">
+      {contacts.map(({ label, value, href }) => (
+        <a class="record-row record-link" href={href} target={href.startsWith('https:') ? '_blank' : undefined} rel={href.startsWith('https:') ? 'noopener noreferrer' : undefined}>
+          <span>{label}</span><span class="record-description">{value}</span><span class="arrow"><Arrow/></span>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

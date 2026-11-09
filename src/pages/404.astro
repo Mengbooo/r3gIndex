@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Page not found — r3actgo" noindex>
+  <main class="not-found">
+    <span class="code">404</span>
+    <h1>This page wandered off.</h1>
+    <p>There’s still plenty to explore.</p>
+    <a href="/">Back to r3actgo <span aria-hidden="true">↗</span></a>
+  </main>
+</BaseLayout>
+<style>
+  .not-found{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;padding:40px;text-align:center;background:#f2f4f8;border-radius:28px;color:#38393c}
+  .code{font-size:clamp(80px,20vw,200px);line-height:1;color:#1e3fd8}
+  h1{font-size:clamp(30px,5vw,64px);font-weight:400;line-height:1.1}
+  p,a{font-size:24px}a{color:#1e3fd8;text-underline-offset:6px}
+</style>

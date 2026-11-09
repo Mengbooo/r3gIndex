@@ -1,0 +1,43 @@
+---
+import { site } from '../data/site';
+---
+      <section class="split-section events-section labs-introduction" id="events" aria-labelledby="events-title">
+        <h2 class="visually-hidden" id="events-title">r3g Labs — experiments in design and code</h2>
+        <div class="labs-identity" role="img" aria-label="Animated r3g Labs identity: design, code, ASCII and human plus AI rearrange between a vertical and a horizontal composition.">
+          <svg class="labs-identity-art" viewBox="0 120 440 310" fill="currentColor" aria-hidden="true" focusable="false">
+            <defs>
+              <clipPath id="labs-clip-mark"><rect x="-4" y="-4" width="150" height="82"/></clipPath>
+              <clipPath id="labs-clip-name"><rect x="-2" y="-2" width="120" height="30"/></clipPath>
+              <clipPath id="labs-clip-year"><rect x="-2" y="-2" width="95" height="25"/></clipPath>
+              <clipPath id="labs-clip-design"><rect x="-2" y="-2" width="145" height="30"/></clipPath>
+              <clipPath id="labs-clip-code"><rect x="-2" y="-2" width="145" height="30"/></clipPath>
+              <clipPath id="labs-clip-explore"><rect x="-2" y="-2" width="220" height="27"/></clipPath>
+              <clipPath id="labs-clip-human"><rect x="-2" y="-2" width="145" height="29"/></clipPath>
+              <clipPath id="labs-clip-ascii"><rect x="-2" y="-2" width="90" height="26"/></clipPath>
+              <clipPath id="labs-clip-symbol"><rect x="-3" y="-3" width="48" height="48"/></clipPath>
+              <clipPath id="labs-clip-dots"><rect x="-3" y="-3" width="46" height="46"/></clipPath>
+              <clipPath id="labs-clip-bracket"><rect x="-3" y="-3" width="55" height="39"/></clipPath>
+              <clipPath id="labs-clip-copyright"><rect x="-3" y="-3" width="42" height="42"/></clipPath>
+              <clipPath id="labs-clip-index"><rect x="-2" y="-2" width="70" height="25"/></clipPath>
+            </defs>
+            <!-- Outer groups reposition; clipped inner groups slide as whole glyphs. -->
+            <g data-labs-piece="mark" transform="translate(151 133)"><g clip-path="url(#labs-clip-mark)"><g class="labs-piece-ink"><text class="labs-type-mark" x="0" y="59">r3g</text><path d="M81 10 95 0 90 17 110 9 99 25" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></g></g></g>
+            <g data-labs-piece="name" transform="translate(167 242)"><g clip-path="url(#labs-clip-name)"><g class="labs-piece-ink"><text class="labs-type-body" x="0" y="21">r3actgo</text></g></g></g>
+            <g data-labs-piece="year" transform="translate(179 218)"><g clip-path="url(#labs-clip-year)"><g class="labs-piece-ink"><text class="labs-type-meta" x="0" y="17">2026 //</text></g></g></g>
+            <g data-labs-piece="design" transform="translate(172 270)"><g clip-path="url(#labs-clip-design)"><g class="labs-piece-ink"><text class="labs-type-body" x="0" y="21">DESIGN &amp;</text></g></g></g>
+            <g data-labs-piece="code" transform="translate(206 297)"><g clip-path="url(#labs-clip-code)"><g class="labs-piece-ink"><text class="labs-type-body" x="0" y="21">CODE</text></g></g></g>
+            <g data-labs-piece="explore" transform="translate(118 330)"><g clip-path="url(#labs-clip-explore)"><g class="labs-piece-ink"><text class="labs-type-small" x="0" y="19">EXPERIMENTS IN PUBLIC,</text></g></g></g>
+            <g data-labs-piece="human" transform="translate(149 354)"><g clip-path="url(#labs-clip-human)"><g class="labs-piece-ink"><text class="labs-type-body" x="0" y="21">HUMAN × AI</text></g></g></g>
+            <g data-labs-piece="ascii" transform="translate(179 384)"><g clip-path="url(#labs-clip-ascii)"><g class="labs-piece-ink"><text class="labs-type-meta" x="0" y="17">ASCII</text></g></g></g>
+            <g data-labs-piece="symbol" transform="translate(112 268)"><g clip-path="url(#labs-clip-symbol)"><g class="labs-piece-ink"><circle cx="20" cy="20" r="18" fill="none" stroke="currentColor" stroke-width="1.8"/><text class="labs-type-meta" x="20" y="26" text-anchor="middle">R3</text></g></g></g>
+            <g data-labs-piece="dots" transform="translate(155 300)"><g clip-path="url(#labs-clip-dots)"><g class="labs-piece-ink labs-ascii-symbol"><text x="5" y="12">·g·</text><text x="5" y="23">grg</text><text x="5" y="34">·3·</text></g></g></g>
+            <g data-labs-piece="bracket" transform="translate(112 304)"><g clip-path="url(#labs-clip-bracket)"><g class="labs-piece-ink"><text class="labs-type-body" x="0" y="26">{ }</text></g></g></g>
+            <g data-labs-piece="copyright" transform="translate(264 381)"><g clip-path="url(#labs-clip-copyright)"><g class="labs-piece-ink"><circle cx="17" cy="17" r="16" fill="none" stroke="currentColor" stroke-width="1.6"/><text class="labs-type-small" x="17" y="23" text-anchor="middle">©</text></g></g></g>
+            <g data-labs-piece="index" transform="translate(113 390)"><g clip-path="url(#labs-clip-index)"><g class="labs-piece-ink"><text class="labs-type-meta" x="0" y="17">↳ 003</text></g></g></g>
+          </svg>
+        </div>
+        <div class="section-content labs-intro-copy">
+          <p class="labs-description">Since I haven’t officially started my professional career yet, I don’t have much in the way of work experience to share. If you’d like to see my projects, you can check out my <a class="intro-inline-link" href={site.labs}><span class="intro-inline-link-label">Labs</span><svg viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false"><path d="M3 13 13 3M3 3h10v10"/></svg></a> (possibly just a few projects); if you’d like to learn more about me, feel free to visit my <a class="intro-inline-link" href={site.blog}><span class="intro-inline-link-label">Blog</span><svg viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false"><path d="M3 13 13 3M3 3h10v10"/></svg></a> (possibly not much food for thought).</p>
+        </div>
+      </section>
+

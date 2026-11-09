@@ -1,0 +1,15 @@
+---
+import { stickers } from '../data/site';
+---
+      <section class="credentials rounded-panel sticker-board" id="stickers" aria-label="r3g interactive stickers">
+        <div class="sticker-board-copy">
+          <p class="labs-description sticker-description">I hope to become someone who is curious about the world, possesses exceptional skills, and is—well—not so boring.</p>
+        </div>
+        <div class="sticker-fallback" aria-hidden="true">
+          {stickers.map(({ file }) => <img src={`/assets/stickers/${file}.webp`} width="1024" height="1024" loading="lazy" decoding="async" alt=""/>)}
+        </div>
+        <canvas class="sticker-canvas" aria-hidden="true"></canvas>
+        <div class="sticker-keyboard"></div>
+        <span class="sticker-status" role="status" aria-live="polite">Five stickers. Hold to peel and drag to place. Keyboard: Space to lift, arrows to move, Space to place, Escape to cancel.</span>
+      </section>
+

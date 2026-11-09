@@ -1,0 +1,19 @@
+---
+import Arrow from './Arrow.astro';
+import { navigation } from '../data/site';
+---
+    <footer class="contact-section" id="contact">
+      <div class="contact-top">
+        <div class="footer-summary">
+          <a class="footer-monogram" href="#top" aria-label="Back to top">r3g</a>
+          <div class="footer-links">
+            <nav class="footer-link-row" aria-label="Footer navigation">{navigation.map(({ label, href }) => <a href={href}><span>{label}</span><Arrow/></a>)}</nav>
+          </div>
+        </div>
+        <div class="footer-badges" role="group" aria-label="r3g — curiosity, design, code and human + AI">
+          <img class="footer-badge footer-badge-curiosity" src="/assets/footer/r3g-curiosity-seal.svg" width="300" height="300" loading="lazy" decoding="async" alt="r3g — Curious about the world. Well, not so boring.">
+          <img class="footer-badge footer-badge-code" src="/assets/footer/r3g-design-code-seal.svg" width="300" height="300" loading="lazy" decoding="async" alt="Design + Code — make things. Always in progress.">
+          <img class="footer-badge footer-badge-ai" src="/assets/footer/r3g-human-ai-seal.svg" width="300" height="300" loading="lazy" decoding="async" alt="r3g — Human + AI. Make something good.">
+        </div>
+      </div>
+    </footer>

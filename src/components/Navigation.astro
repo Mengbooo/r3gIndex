@@ -1,0 +1,14 @@
+---
+import { navigation } from '../data/site';
+---
+  <header class="navigation" id="navigation">
+    <svg class="nav-shape" viewBox="0 0 145 34" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+      <path d="M0 0 V68 H15 C15 49.222 30.222 34 49 34 H91 C122.034 34 116.461 0 145 0 Z"/>
+    </svg>
+    <nav aria-label="Main navigation">
+      <button class="monogram" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="nav-links"><span>r3g</span></button>
+      <div class="nav-group" id="nav-links">
+        {navigation.map(({ label, href }) => <a href={href}><span>{label}</span></a>)}
+      </div>
+    </nav>
+  </header>
